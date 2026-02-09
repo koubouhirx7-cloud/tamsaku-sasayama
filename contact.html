@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ご予約・お問い合わせ | 丹探（タンサク）【公式】</title>
+    <meta name="description" content="丹探（タンサク）のサイクリングツアーのご予約、お問い合わせはこちらから。お気軽にご相談ください。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="subpage">
+    <header class="header">
+        <div class="header-inner">
+            <h1 class="logo"><a href="index.html">丹探 -TAMSAKU-</a></h1>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html#concept">Concept</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="index.html#tours">Tours</a></li>
+                    <li><a href="index.html#gallery">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li class="lang-switch"><span class="current">JP</span> | <a href="en/contact.html">EN</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-header-lang"><a href="en/contact.html">EN</a></div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-nav">
+        <ul>
+            <li><a href="index.html#concept">Concept</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="index.html#tours">Tours</a></li>
+            <li><a href="index.html#gallery">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li class="lang-switch-mobile"><span class="current">JP</span> | <a href="en/contact.html">EN</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <div class="course-hero">
+            <div class="course-hero-bg" style="background-image: url('images/A7300790.jpg');"></div>
+            <div class="course-hero-content">
+                <span class="course-label">RESERVATION</span>
+                <h2>ご予約・お問い合わせ</h2>
+            </div>
+        </div>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="subtitle">FORM</span>
+                    <h3>お問い合わせフォーム</h3>
+                </div>
+                <!-- 
+                     Note: This form needs a backend or service (like Formspree) to work effectively.
+                     For now it is a standard HTML form structure.
+                -->
+                <div class="contact-form-container">
+                    <p class="form-desc">
+                        ツアーのご予約、カスタマイズのご相談、その他ご質問など、お気軽にお問い合わせください。<br>
+                        内容を確認次第、担当者よりご連絡させていただきます。
+                    </p>
+                    <form class="contact-form" action="https://formspree.io/f/mkovgjvp" method="POST">
+                        <input type="hidden" name="_next" value="contact-success.html">
+                        <!-- <input type="hidden" name="_next" value="contact-success.html"> Using absolute path recommended for Formspree redirects, but relative often works if hosted well. Using placeholder ID. -->
+                        <input type="hidden" name="_subject" value="丹探：ホームページからのお問い合わせ">
+                        <div class="form-group">
+                            <label for="name">お名前 <span class="required">必須</span></label>
+                            <input type="text" id="name" name="name" required placeholder="例：山田 太郎">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">メールアドレス <span class="required">必須</span></label>
+                            <input type="email" id="email" name="email" required placeholder="例：email@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">電話番号 <span class="required">必須</span></label>
+                            <input type="tel" id="phone" name="phone" required placeholder="例：090-1234-5678">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="course">ご希望のコース</label>
+                            <div class="select-wrapper">
+                                <select id="course" name="course">
+                                    <option value="" selected>コースを選択してください（相談して決めたい場合は未選択）</option>
+                                    <option value="sakura">桜づつみ回廊サイクリング</option>
+                                    <option value="sasayama">篠山口駅出発プラン</option>
+                                    <option value="dinosaur">恐竜の足跡をめぐるツアー</option>
+                                    <option value="castletown">丹波篠山”城下町”サイクリング</option>
+                                    <option value="fukusumi">宿場街”福住”サイクリング</option>
+                                    <option value="custom">オーダーメイド・その他</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">ご希望日時</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="participants">人数</label>
+                            <input type="number" id="participants" name="participants" min="1" placeholder="例：2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">お問い合わせ内容・ご要望</label>
+                            <textarea id="message" name="message" rows="5"
+                                placeholder="ご質問や、ツアーに関するご要望をご自由にお書きください。"></textarea>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn-primary">送信する</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">丹探 -TAMSAKU-</div>
+                <ul class="footer-nav">
+                    <li><a href="https://maps.app.goo.gl/iBcVmpdM2Gqdh7BfA">運営者情報</a></li>
+                    <li><a href="https://www.instagram.com/tamsaku_tours/">Instagram</a></li>
+                </ul>
+            </div>
+            <p class="copyright">Copyright © 丹探（タンサク）【公式】丹波篠山サイクリングツアー All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
