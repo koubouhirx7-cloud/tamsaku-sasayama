@@ -192,6 +192,7 @@ async function initArchivePreview() {
 async function initPostDetail() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id');
+    const draftKey = urlParams.get('draftKey');
 
     if (!postId) {
         window.location.href = 'archive.html';
@@ -199,7 +200,8 @@ async function initPostDetail() {
     }
 
     try {
-        const post = await fetchMicroCMS(`${CONFIG.MICROCMS_ENDPOINT}/${postId}`);
+        const params = draftKey ? { draftKey: draftKey } : {};
+        const post = await fetchMicroCMS(`${CONFIG.MICROCMS_ENDPOINT}/${postId}`, params);
         renderPostDetail(post);
 
         // Also fetch related for "Look Back"
