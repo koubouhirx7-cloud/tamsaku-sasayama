@@ -287,34 +287,46 @@ function renderPostDetail(post) {
     if (content) {
         content.innerHTML = post.content;
         
-        // Enhance MicroCMS gallery: group consecutive figures into a masonry tile layout
+        // Enhance MicroCMS gallery: single figures get editorial style, consecutive figures become masonry
         const children = Array.from(content.children);
-        let currentGallery = null;
+        let figureGroup = [];
+        
+        const wrapWithLightbox = (fig) => {
+            const img = fig.querySelector('img');
+            if (img && !img.parentNode.hasAttribute('data-fslightbox')) {
+                const a = document.createElement('a');
+                a.href = img.src;
+                a.setAttribute('data-fslightbox', 'post-gallery');
+                fig.insertBefore(a, img);
+                a.appendChild(img);
+            }
+        };
+
+        const processGroup = () => {
+            if (figureGroup.length === 1) {
+                const fig = figureGroup[0];
+                fig.classList.add('editorial-figure');
+                wrapWithLightbox(fig);
+            } else if (figureGroup.length > 1) {
+                const gallery = document.createElement('div');
+                gallery.className = 'rich-tile-gallery';
+                content.insertBefore(gallery, figureGroup[0]);
+                figureGroup.forEach(fig => {
+                    wrapWithLightbox(fig);
+                    gallery.appendChild(fig);
+                });
+            }
+            figureGroup = [];
+        };
         
         children.forEach(child => {
             if (child.tagName === 'FIGURE') {
-                if (!currentGallery) {
-                    currentGallery = document.createElement('div');
-                    currentGallery.className = 'rich-tile-gallery';
-                    content.insertBefore(currentGallery, child);
-                }
-                
-                // Wrap image with Lightbox anchor
-                const img = child.querySelector('img');
-                if (img) {
-                    const a = document.createElement('a');
-                    a.href = img.src;
-                    a.setAttribute('data-fslightbox', 'post-gallery');
-                    child.insertBefore(a, img);
-                    a.appendChild(img);
-                }
-                
-                currentGallery.appendChild(child);
+                figureGroup.push(child);
             } else if (child.tagName !== 'BR' && child.textContent.trim() !== '') {
-                // Break the gallery grouping if a non-empty element is encountered
-                currentGallery = null;
+                processGroup();
             }
         });
+        processGroup(); // Process any remaining at the end
     }
 
     if (typeof refreshFsLightbox === 'function') {

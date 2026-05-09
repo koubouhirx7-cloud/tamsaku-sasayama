@@ -1048,6 +1048,33 @@ ul {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
+/* Editorial Style for Single Images */
+.post-content .editorial-figure {
+    margin: 6rem -2rem !important; /* Pull out from container to make it wider and give breathing room */
+}
+
+.post-content .editorial-figure img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease;
+    cursor: zoom-in;
+}
+
+.post-content .editorial-figure:hover img {
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .post-content .editorial-figure {
+        margin: 4rem -1.5rem !important;
+        border-radius: 0; /* Edge to edge on mobile */
+    }
+    .post-content .editorial-figure img {
+        border-radius: 0;
+    }
+}
+
 .post-content figcaption {
     font-size: 0.9rem;
     color: #888;
