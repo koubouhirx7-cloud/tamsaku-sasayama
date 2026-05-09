@@ -1055,6 +1055,51 @@ ul {
     margin-top: 1rem;
 }
 
+/* Rich Tile Gallery (Masonry Layout) */
+.rich-tile-gallery {
+    column-count: 1;
+    column-gap: 1.5rem;
+    margin: 4rem 0;
+}
+
+@media (min-width: 600px) {
+    .rich-tile-gallery {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 900px) {
+    .rich-tile-gallery {
+        column-count: 3;
+    }
+}
+
+/* If there is only one image, don't use columns */
+.rich-tile-gallery:has(figure:only-child) {
+    column-count: 1;
+}
+
+.rich-tile-gallery figure {
+    margin: 0 0 1.5rem !important; /* Override default figure margin */
+    break-inside: avoid;
+    display: inline-block;
+    width: 100%;
+}
+
+.rich-tile-gallery figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+    cursor: zoom-in;
+}
+
+.rich-tile-gallery figure:hover img {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
 .post-gallery {
     margin: 4rem 0;
 }

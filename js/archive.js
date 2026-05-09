@@ -286,6 +286,35 @@ function renderPostDetail(post) {
 
     if (content) {
         content.innerHTML = post.content;
+        
+        // Enhance MicroCMS gallery: group consecutive figures into a masonry tile layout
+        const children = Array.from(content.children);
+        let currentGallery = null;
+        
+        children.forEach(child => {
+            if (child.tagName === 'FIGURE') {
+                if (!currentGallery) {
+                    currentGallery = document.createElement('div');
+                    currentGallery.className = 'rich-tile-gallery';
+                    content.insertBefore(currentGallery, child);
+                }
+                
+                // Wrap image with Lightbox anchor
+                const img = child.querySelector('img');
+                if (img) {
+                    const a = document.createElement('a');
+                    a.href = img.src;
+                    a.setAttribute('data-fslightbox', 'post-gallery');
+                    child.insertBefore(a, img);
+                    a.appendChild(img);
+                }
+                
+                currentGallery.appendChild(child);
+            } else if (child.tagName !== 'BR' && child.textContent.trim() !== '') {
+                // Break the gallery grouping if a non-empty element is encountered
+                currentGallery = null;
+            }
+        });
     }
 
     if (typeof refreshFsLightbox === 'function') {
