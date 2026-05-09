@@ -287,10 +287,6 @@ function renderPostDetail(post) {
     if (content) {
         content.innerHTML = post.content;
         
-        // Enhance MicroCMS gallery: single figures get editorial style, consecutive figures become masonry
-        const children = Array.from(content.children);
-        let figureGroup = [];
-        
         const wrapWithLightbox = (fig) => {
             const img = fig.querySelector('img');
             if (img && !img.parentNode.hasAttribute('data-fslightbox')) {
@@ -302,31 +298,71 @@ function renderPostDetail(post) {
             }
         };
 
-        const processGroup = () => {
-            if (figureGroup.length === 1) {
-                const fig = figureGroup[0];
-                fig.classList.add('editorial-figure');
-                wrapWithLightbox(fig);
-            } else if (figureGroup.length > 1) {
-                const gallery = document.createElement('div');
-                gallery.className = 'rich-tile-gallery';
-                content.insertBefore(gallery, figureGroup[0]);
-                figureGroup.forEach(fig => {
-                    wrapWithLightbox(fig);
-                    gallery.appendChild(fig);
-                });
-            }
-            figureGroup = [];
-        };
+        // Extract all figures
+        const figures = Array.from(content.querySelectorAll('figure'));
         
-        children.forEach(child => {
-            if (child.tagName === 'FIGURE') {
-                figureGroup.push(child);
-            } else if (child.tagName !== 'BR' && child.textContent.trim() !== '') {
-                processGroup();
+        if (figures.length > 0) {
+            // Remove old gallery headers/lines
+            const hrs = content.querySelectorAll('hr');
+            if (hrs.length > 0) hrs[hrs.length - 1].remove();
+            
+            const headings = content.querySelectorAll('h2, h3');
+            headings.forEach(h => {
+                if (h.textContent.includes('ギャラリー') || h.textContent.includes('Gallery') || h.textContent.includes('写真')) {
+                    h.remove();
+                }
+            });
+
+            // Detach all figures from their original position
+            figures.forEach(fig => fig.remove());
+
+            // Find valid paragraphs to insert images after
+            const paragraphs = Array.from(content.querySelectorAll('p'));
+            const validPoints = paragraphs.filter(p => {
+                const text = p.textContent.trim();
+                // Exclude empty paragraphs and "fake headings" like 【午前：城下町の...】
+                return text !== '' && !text.match(/^【.*】$/);
+            });
+
+            let figIndex = 0;
+            
+            // Distribute one image after each valid paragraph block
+            validPoints.forEach((p) => {
+                if (figIndex < figures.length) {
+                    const fig = figures[figIndex];
+                    fig.className = 'editorial-figure'; // Apply wide editorial style
+                    wrapWithLightbox(fig);
+                    
+                    if (p.nextSibling) {
+                        p.parentNode.insertBefore(fig, p.nextSibling);
+                    } else {
+                        p.parentNode.appendChild(fig);
+                    }
+                    figIndex++;
+                }
+            });
+
+            // Any remaining images become a masonry tile gallery at the bottom
+            if (figIndex < figures.length) {
+                const leftoverGallery = document.createElement('div');
+                leftoverGallery.className = 'rich-tile-gallery';
+                
+                // Add a small spacer/divider
+                const divider = document.createElement('div');
+                divider.style.margin = '5rem 0 3rem';
+                divider.style.borderTop = '1px dashed #ddd';
+                content.appendChild(divider);
+                
+                content.appendChild(leftoverGallery);
+                
+                for (; figIndex < figures.length; figIndex++) {
+                    const fig = figures[figIndex];
+                    fig.className = ''; // Standard tile style
+                    wrapWithLightbox(fig);
+                    leftoverGallery.appendChild(fig);
+                }
             }
-        });
-        processGroup(); // Process any remaining at the end
+        }
     }
 
     if (typeof refreshFsLightbox === 'function') {
