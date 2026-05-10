@@ -179,7 +179,8 @@ async function initArchivePreview() {
     const previewGrid = document.querySelector('.archive-preview .archive-grid');
 
     try {
-        const data = await fetchMicroCMS(CONFIG.MICROCMS_ENDPOINT, { limit: 2 });
+        const data = await fetchMicroCMS(CONFIG.MICROCMS_ENDPOINT, { limit: 3 });
+        previewGrid.innerHTML = ''; // クリアしてサンプル記事を消す
         renderPostCards(data.contents, previewGrid);
     } catch (error) {
         console.error('Error fetching preview:', error);
